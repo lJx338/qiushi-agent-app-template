@@ -1,0 +1,4 @@
+# Application fragment ONLY, not a complete DSH runtime.
+# A tested product profile must provide tools, an authenticated qsBusiness provider,
+# and model/session infrastructure. Do not mount the development mock provider.
+- name: '@qiushi/app-starter-app'

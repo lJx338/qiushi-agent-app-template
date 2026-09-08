@@ -1,0 +1,23 @@
+{
+  "manifestVersion": "1",
+  "id": "qiushi.starter-app",
+  "name": "应用开发样板 Agent",
+  "version": "0.1.0",
+  "owner": "lJx338",
+  "contractVersion": "1",
+  "stage": "development",
+  "entry": "src/app.ts",
+  "hostEntry": "src/host.ts",
+  "workbench": { "mode": "development-form", "target": "dsh-client" },
+  "requires": ["customers.read@1", "drafts.create@1"],
+  "permissions": ["customer:read", "draft:create"],
+  "actions": [{
+    "id": "qiushi.starter-app.createDraft",
+    "toolName": "qiushi_starter_app_create_draft",
+    "permissions": ["customer:read", "draft:create"],
+    "effects": "business-write",
+    "inputSchema": "schemas/create.input.json",
+    "outputSchema": "schemas/create.output.json"
+  }],
+  "configSchema": "schemas/config.json"
+}

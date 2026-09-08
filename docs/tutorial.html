@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light"><title>独立 Agent 应用开发教程 · starter-app</title>
+<style>
+:root{--blue:#1d63ff;--ink:#202c40;--muted:#53647a;--line:#e1e8f2;--soft:#edf3ff}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:#fff;color:var(--ink);font:16px/1.8 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-underline-offset:4px}a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}header{padding:40px max(24px,calc((100vw - 1180px)/2));border-bottom:1px solid var(--line)}.eyebrow{font-size:12px;letter-spacing:2px;font-weight:700;color:var(--blue)}h1{font-size:36px;line-height:1.35;margin:12px 0}header p{max-width:760px;color:var(--muted)}.tag{display:inline-block;border:1px solid #b7ccff;border-radius:6px;padding:3px 10px;color:#1248c9;background:var(--soft);font-size:13px}.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:48px;max-width:1180px;margin:auto;padding:32px 24px 80px}nav{position:sticky;top:24px;align-self:start;font-size:14px}nav a{display:block;padding:7px 10px;text-decoration:none;border-radius:6px;color:var(--muted)}nav a:hover{background:var(--soft);color:var(--blue)}main{min-width:0}section{padding:0 0 30px;margin-bottom:28px;border-bottom:1px solid var(--line)}h2{font-size:24px;margin:0 0 16px}h3{font-size:18px;margin:24px 0 8px}.note{padding:16px 20px;background:var(--soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0}.steps{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.steps span{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f5f8fd;border:1px solid var(--line);border-radius:8px;line-height:1.7;font-size:13px}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}p code,li code{font-size:.9em;background:#f0f4fa;padding:2px 5px;border-radius:4px}.table{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;text-align:left}th,td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f8fd}ul,ol{padding-left:24px}li{margin:6px 0}.muted,footer{color:var(--muted);font-size:13px}footer{max-width:1180px;margin:auto;padding:24px;border-top:1px solid var(--line)}@media(max-width:800px){h1{font-size:28px}.layout{grid-template-columns:1fr;gap:24px}nav{position:static;display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:16px}nav a{padding:5px 10px}header{padding:28px 24px}h2{font-size:22px}}@media print{nav{display:none}.layout{display:block}section{break-inside:avoid}header{padding:20px}a{color:inherit}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">求实 · 开发者指南</div><h1>从独立仓库，交付一个 Agent 应用</h1><p>先跑通样板，再给 AI 一份有边界的 PRD。你的代码留在应用仓库，平台后续接收经过校验的应用制品。</p><span class="tag">starter-app · 开发基线 0.2.0-dev.1</span> <span class="tag">可离线阅读</span></header>
+<div class="layout"><nav aria-label="教程章节"><a href="#scope">01 / 开始之前</a><a href="#setup">02 / 环境与首跑</a><a href="#create">03 / 创建自己的应用</a><a href="#ai">04 / 把任务交给 AI</a><a href="#code">05 / 应用怎样组织</a><a href="#preview">06 / 预览与测试</a><a href="#delivery">07 / 提交与交付</a><a href="#troubleshooting">08 / 常见问题</a><a href="#checklist">09 / 交付检查</a></nav>
+<main>
+<section id="scope"><h2>01 / 先确认现在能做什么</h2><p>本仓库只有应用、开发依赖和说明，没有平台主项目。SDK、模拟执行器、检查、预览和打包来自固定版本 <code>@qiushi/app-kit</code>。</p><div class="note"><strong>这是开发工具，不是已上线的 SaaS。</strong><br>可做业务逻辑、schema、合成测试及交互规格；真实登录、租户权限、飞书/腾讯、持久审批、DSH 原生客户端和应用安装后台仍待平台实现。不要把模拟成功写成生产验收。</div><div class="steps"><span>创建应用</span><span>PRD + AI 开发</span><span>预览与验证</span><span>打包交付</span><span>后续：后台授权启用</span></div></section>
+<section id="setup"><h2>02 / 环境准备与第一次运行</h2><p>先拉取你有权限访问的私有模板仓库，并进入目录。使用 <code>.nvmrc</code> 指定的 Node 22.23.2；已安装 nvm 时执行：</p><pre><code>nvm install
+nvm use
+npm ci
+npm run verify
+npm run app:run
+npm run app:dev</code></pre><p>当前验收环境是 macOS/Linux；Windows 可使用 WSL2，原生 Windows 尚未验收。没有 nvm 时，用其他版本管理器安装同一 Node 版本。分发的模板含 lock；全新生成目录若尚无 lock，先执行一次 <code>npm install</code>。后续团队和 CI 一律用 <code>npm ci</code>。</p><p><code>app:dev</code> 会输出 <code>http://127.0.0.1:随机端口</code>。用浏览器打开，Ctrl+C 结束；不要使用教程中猜测的固定端口。默认样板会为“甲企业测试客户”创建模拟草稿。</p></section>
+<section id="create"><h2>03 / 创建属于你的应用</h2><p>样板仓库用于快速验收。把下方的应用名和负责人改成实际任务内容，生成到一个<strong>不存在的新目录</strong>：</p><pre><code>npm run app:create -- crm-assistant --name "客户管理 Agent" --owner YOUR_GITHUB_LOGIN --out ../crm-assistant
+cd ../crm-assistant
+npm install
+npm run verify</code></pre><p>生成器会带上 SDK 依赖归档、规范、HTML 教程、测试和 CI。随后只打开 <code>crm-assistant</code> 这个新目录给 AI，并为它建立自己的私有 Git 仓库。无需克隆平台源码，也不需要把业务源码发回平台仓库。</p><p class="muted">生成器拒绝覆盖已有目录。每个应用使用自己的 slug、appId、工具名和 owner；应用名称可以是中文，slug 使用小写字母、数字与连字符。</p></section>
+<section id="ai"><h2>04 / 给 AI 一份能执行的任务</h2><p>先补全 <a href="PRD.md">docs/PRD.md</a>，至少写清用户、业务范围、输入输出、权限、验收样例和缺失平台能力。不要只说“做一个 CRM”。下面的指令可以复制后修改：</p><pre><code>阅读根 AGENTS.md、docs/DEVELOPMENT.md、docs/PRD.md、
+docs/PERMISSIONS.md 和 docs/FRONTEND.md。
+这是独立业务应用仓库，不是平台主项目。
+先复述任务范围、分支和允许修改路径。
+业务只修改 src、schemas、fixtures、tests、presets 及本应用 docs。
+不修改 vendor、node_modules、工具链、CI 或依赖版本来绕过检查。
+只使用 @qiushi/app-kit 已提供的契约。
+缺平台能力时列出接口需求和阻塞，不克隆平台仓库自行修改。
+完成正常、无权限、错误输入和重复提交测试。
+执行 npm run verify 和 npm run app:pack。
+交付真实结果、变更文件清单和仍未实现的能力，不自行部署生产。</code></pre><p>一个任务一个短分支，一个 AI 会话一个独立工作目录。AGENTS 能指导 AI，但不是文件写保护；开发者仍需核对变更清单和业务结果。</p></section>
+<section id="code"><h2>05 / 应用代码放在哪里</h2><div class="table"><table><thead><tr><th>文件 / 目录</th><th>你的工作</th></tr></thead><tbody><tr><td>src/app.ts</td><td>定义业务动作；通过 execution.data 使用有边界的数据能力。</td></tr><tr><td>src/host.ts</td><td>通过 kit/dsh 注册 DSH 工具；没有真实 qsBusiness 必须拒绝。</td></tr><tr><td>schemas / app.manifest.json</td><td>输入、输出、配置、动作、权限、副作用和版本保持一致。</td></tr><tr><td>fixtures / tests</td><td>合成数据、正常路径、拒绝路径和独立业务算例。</td></tr><tr><td>src/client</td><td>原生工作台预留；当前先写交互规格，不自行发明客户端 API。</td></tr><tr><td>docs</td><td>岗位 PRD、权限规格、前端规则、开发教程和验收证据。</td></tr><tr><td>vendor / package-lock.json</td><td>平台提供的固定开发依赖与完整性记录，不直接编辑归档。</td></tr></tbody></table></div><p>金额和业务状态用确定性逻辑。模型输入、外部文档及工具输出是数据，不能授予权限。共享飞书应用身份与员工身份不同；不能用机器人绕过员工无权。</p><p>界面延续白底蓝色，主色 #1d63ff。布局、状态与窄屏要求见 <a href="FRONTEND.md">前端规范</a>；共享样式 token 由开发包提供。</p></section>
+<section id="preview"><h2>06 / 预览、测试与定位错误</h2><pre><code>npm run app:check
+npm run app:test
+npm run typecheck
+npm run app:dev
+# 完整本地门禁
+npm run verify</code></pre><p>开发预览提供合成租户、无权限和停用场景。修改业务输入后使用新的幂等键；同一意图重复点击应去重，不同参数复用同键应冲突。数据在内存中，重启即清空。</p><div class="note">预览是 JSON 动作表单。它可以验证契约和业务执行，但不能证明正式 UI、真实客户数据、生产隔离或长任务恢复已经完成。</div><p>运行失败时给 AI 提供：命令、退出结果、Node/npm 版本、当前 commit、最小合成输入。不要提供真实凭证，也不要要求它删掉失败测试。</p></section>
+<section id="delivery"><h2>07 / 在应用仓库提交，再交付制品</h2><p>创建任务分支，例如 <code>feat/customer-search</code>。提交前查看 <code>git status --short</code> 和 <code>git diff</code>，检查是否混入依赖篡改、密钥或无关文件。</p><pre><code>npm run verify
+npm run app:pack</code></pre><p>打包输出到 <code>.local/artifacts/</code>：一个应用 tgz 和一个 release.json，包含版本、SHA-256、manifest 与未完成门槛。<strong>不提交 .local、dist 或 node_modules。</strong>vendor 中的平台开发包是明确允许提交的版本化依赖，性质不同。</p><p>源码在本应用仓库提 PR；本仓库 CI 会运行安装、验证和打包。应用发布后，目标流程是“平台后台登记制品 → 校验兼容性 → 上架 → 企业选择数据、授权并启用”。后台目前未实现，开发包不能直接生产启用。需要客户端装配的 DSH 插件，后续由平台流水线处理。</p><p>不要直接推 main。仓库评审人、成员权限与主干保护须实际配置；CI 成功不等于已获得独立业务批准。</p></section>
+<section id="troubleshooting"><h2>08 / 常见问题</h2><h3>AI 说需要修改平台，怎么办？</h3><p>把缺少的能力、输入输出、权限和验收样例写进本应用 PRD，交给平台负责人。应用继续开发不依赖该接口的部分，不自行克隆平台或复制 SDK。</p><h3>找不到开发包 / npm ci 失败？</h3><p>确认 vendor 内归档存在、使用正确 Node、package 与 lock 一致。新生成目录先 npm install；已经带 lock 的团队仓库若不一致，定位变更原因，不能随意删除 lock 或使用最新版依赖。</p><h3>能否直接拿自己的 React 页面作为插件？</h3><p>目前不能保证兼容。原生 client 模板仍待平台集成，应用先遵守交互规范；不要把另一份 React 打入宿主。</p><h3>为什么 --release 失败？</h3><p>这是预期门禁：真实登录、provider、DSH 集成和可信发布证据尚未完成。不要修改 stage 或 productionReady 使它通过。</p></section>
+<section id="checklist"><h2>09 / 交付前最后核对</h2><ul><li>应用 PRD 与权限规格完整，业务样例有独立预期值。</li><li>manifest、schema、实现和测试一致，没有客户数据或凭证。</li><li>verify 通过，开发包及摘要可定位，未提交业务构建产物。</li><li>代码只改变本任务范围；列出所有共享能力缺口。</li><li>说明哪些是模拟、哪些是真实集成、哪些仍未实现。</li><li>在本应用仓库提交 PR，交付制品，不合并源码到平台。</li></ul><p>更多细节：<a href="DEVELOPMENT.md">开发流程</a> · <a href="PERMISSIONS.md">权限规格</a> · <a href="FRONTEND.md">前端规范</a> · <a href="PRD.md">岗位任务模板</a></p></section>
+</main></div><footer>求实制造业 Agent · 独立应用开发教程 · 无外部脚本、字体或网络依赖。文档描述开发工具，不构成生产就绪声明。</footer>
+</body></html>
