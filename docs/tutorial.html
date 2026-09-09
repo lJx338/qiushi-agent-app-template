@@ -8,10 +8,10 @@
 </style>
 </head>
 <body>
-<header><div class="eyebrow">求实 · 开发者指南</div><h1>从独立仓库，交付一个 Agent 应用</h1><p>先跑通样板，再给 AI 一份有边界的 PRD。你的代码留在应用仓库，平台后续接收经过校验的应用制品。</p><span class="tag">starter-app · 开发基线 0.2.0-dev.1</span> <span class="tag">可离线阅读</span></header>
+<header><div class="eyebrow">求实 · 开发者指南</div><h1>从独立仓库，交付一个 Agent 应用</h1><p>先跑通样板，再给 AI 一份有边界的 PRD。你的代码留在应用仓库，平台后续接收经过校验的应用制品。</p><span class="tag">starter-app · 开发基线 0.3.0-dev.1</span> <span class="tag">可离线阅读</span></header>
 <div class="layout"><nav aria-label="教程章节"><a href="#scope">01 / 开始之前</a><a href="#setup">02 / 环境与首跑</a><a href="#create">03 / 创建自己的应用</a><a href="#ai">04 / 把任务交给 AI</a><a href="#code">05 / 应用怎样组织</a><a href="#preview">06 / 预览与测试</a><a href="#delivery">07 / 提交与交付</a><a href="#troubleshooting">08 / 常见问题</a><a href="#checklist">09 / 交付检查</a></nav>
 <main>
-<section id="scope"><h2>01 / 先确认现在能做什么</h2><p>本仓库只有应用、开发依赖和说明，没有平台主项目。SDK、模拟执行器、检查、预览和打包来自固定版本 <code>@qiushi/app-kit</code>。</p><div class="note"><strong>这是开发工具，不是已上线的 SaaS。</strong><br>可做业务逻辑、schema、合成测试及交互规格；真实登录、租户权限、飞书/腾讯、持久审批、DSH 原生客户端和应用安装后台仍待平台实现。不要把模拟成功写成生产验收。</div><div class="steps"><span>创建应用</span><span>PRD + AI 开发</span><span>预览与验证</span><span>打包交付</span><span>后续：后台授权启用</span></div></section>
+<section id="scope"><h2>01 / 先确认现在能做什么</h2><p>本仓库只有应用、开发依赖和说明，没有平台主项目。SDK、模拟执行器、检查、预览和打包来自固定版本 <code>@qiushi/app-kit</code>。</p><div class="note"><strong>这是开发工具，不是已上线的 SaaS。</strong><br>可做业务逻辑、schema、合成测试及平台 UI extension；真实登录、租户权限、飞书/腾讯、持久审批和应用安装后台仍待平台实现。不要把模拟成功写成生产验收。</div><div class="steps"><span>创建应用</span><span>PRD + AI 开发</span><span>预览与验证</span><span>打包交付</span><span>后续：后台授权启用</span></div></section>
 <section id="setup"><h2>02 / 环境准备与第一次运行</h2><p>先拉取你有权限访问的私有模板仓库，并进入目录。使用 <code>.nvmrc</code> 指定的 Node 22.23.2；已安装 nvm 时执行：</p><pre><code>nvm install
 nvm use
 npm ci
@@ -42,7 +42,7 @@ npm run app:dev
 npm run verify</code></pre><p>开发预览提供合成租户、无权限和停用场景。修改业务输入后使用新的幂等键；同一意图重复点击应去重，不同参数复用同键应冲突。数据在内存中，重启即清空。</p><div class="note">预览是 JSON 动作表单。它可以验证契约和业务执行，但不能证明正式 UI、真实客户数据、生产隔离或长任务恢复已经完成。</div><p>运行失败时给 AI 提供：命令、退出结果、Node/npm 版本、当前 commit、最小合成输入。不要提供真实凭证，也不要要求它删掉失败测试。</p></section>
 <section id="delivery"><h2>07 / 在应用仓库提交，再交付制品</h2><p>创建任务分支，例如 <code>feat/customer-search</code>。提交前查看 <code>git status --short</code> 和 <code>git diff</code>，检查是否混入依赖篡改、密钥或无关文件。</p><pre><code>npm run verify
 npm run app:pack</code></pre><p>打包输出到 <code>.local/artifacts/</code>：一个应用 tgz 和一个 release.json，包含版本、SHA-256、manifest 与未完成门槛。<strong>不提交 .local、dist 或 node_modules。</strong>vendor 中的平台开发包是明确允许提交的版本化依赖，性质不同。</p><p>源码在本应用仓库提 PR；本仓库 CI 会运行安装、验证和打包。应用发布后，目标流程是“平台后台登记制品 → 校验兼容性 → 上架 → 企业选择数据、授权并启用”。后台目前未实现，开发包不能直接生产启用。需要客户端装配的 DSH 插件，后续由平台流水线处理。</p><p>不要直接推 main。仓库评审人、成员权限与主干保护须实际配置；CI 成功不等于已获得独立业务批准。</p></section>
-<section id="troubleshooting"><h2>08 / 常见问题</h2><h3>AI 说需要修改平台，怎么办？</h3><p>把缺少的能力、输入输出、权限和验收样例写进本应用 PRD，交给平台负责人。应用继续开发不依赖该接口的部分，不自行克隆平台或复制 SDK。</p><h3>找不到开发包 / npm ci 失败？</h3><p>确认 vendor 内归档存在、使用正确 Node、package 与 lock 一致。新生成目录先 npm install；已经带 lock 的团队仓库若不一致，定位变更原因，不能随意删除 lock 或使用最新版依赖。</p><h3>能否直接拿自己的 React 页面作为插件？</h3><p>目前不能保证兼容。原生 client 模板仍待平台集成，应用先遵守交互规范；不要把另一份 React 打入宿主。</p><h3>为什么 --release 失败？</h3><p>这是预期门禁：真实登录、provider、DSH 集成和可信发布证据尚未完成。不要修改 stage 或 productionReady 使它通过。</p></section>
+<section id="troubleshooting"><h2>08 / 常见问题</h2><h3>AI 说需要修改平台，怎么办？</h3><p>把缺少的能力、输入输出、权限和验收样例写进本应用 PRD，交给平台负责人。应用继续开发不依赖该接口的部分，不自行克隆平台或复制 SDK。</p><h3>找不到开发包 / npm ci 失败？</h3><p>确认 vendor 内归档存在、使用正确 Node、package 与 lock 一致。新生成目录先 npm install；已经带 lock 的团队仓库若不一致，定位变更原因，不能随意删除 lock 或使用最新版依赖。</p><h3>能否直接拿自己的 React 页面作为插件？</h3><p>只能通过 <code>@qiushi/app-kit/ui</code> 和平台宿主 bridge 声明页面。React/ReactDOM 只作为 peer，由平台单一宿主提供；不得打包副本、直连平台/DSH、读取 cookie 或凭证。</p><h3>为什么 --release 失败？</h3><p>这是预期门禁：真实登录、provider、DSH 集成和可信发布证据尚未完成。不要修改 stage 或 productionReady 使它通过。</p></section>
 <section id="checklist"><h2>09 / 交付前最后核对</h2><ul><li>应用 PRD 与权限规格完整，业务样例有独立预期值。</li><li>manifest、schema、实现和测试一致，没有客户数据或凭证。</li><li>verify 通过，开发包及摘要可定位，未提交业务构建产物。</li><li>代码只改变本任务范围；列出所有共享能力缺口。</li><li>说明哪些是模拟、哪些是真实集成、哪些仍未实现。</li><li>在本应用仓库提交 PR，交付制品，不合并源码到平台。</li></ul><p>更多细节：<a href="DEVELOPMENT.md">开发流程</a> · <a href="PERMISSIONS.md">权限规格</a> · <a href="FRONTEND.md">前端规范</a> · <a href="PRD.md">岗位任务模板</a></p></section>
 </main></div><footer>求实制造业 Agent · 独立应用开发教程 · 无外部脚本、字体或网络依赖。文档描述开发工具，不构成生产就绪声明。</footer>
 </body></html>

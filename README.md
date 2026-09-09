@@ -39,7 +39,7 @@ npm run app:build
 npm run app:pack
 ```
 
-产物在 .local/artifacts：应用 tgz 与 release.json，含 SHA-256、manifest 和开发阶段标记。应用源码在本仓库评审；后续后台按制品登记、校验、授权和启用，不要求合并到平台源码。
+产物在 .local/artifacts：应用 tgz 与 v2 release.json，含归档、UI、runtime 的 SHA-256、数据依赖、权限摘要和开发阶段标记。应用源码在本仓库评审；后续后台按制品登记、校验、授权和启用，不要求合并到平台源码。
 
 后台尚未实现；此开发包未签名、不能生产启用，也未验证真实 DSH Host/Client、登录/权限、飞书或持久业务。`npm run app:check -- --release` 必须拒绝生产发布。
 

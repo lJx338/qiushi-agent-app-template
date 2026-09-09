@@ -14,6 +14,8 @@
     "README.md"
   ],
   "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "@deepseek-ai/cordis": "4.0.2",
     "@deepseek-ai/dsh-tools": "0.1.3-alpha.2"
   },
@@ -32,7 +34,7 @@
     "verify": "qiushi-app verify"
   },
   "devDependencies": {
-    "@qiushi/app-kit": "file:vendor/qiushi-app-kit-0.2.0-dev.1.tgz",
+    "@qiushi/app-kit": "file:vendor/qiushi-app-kit-0.3.0-dev.1.tgz",
     "@types/node": "22.20.0"
   }
 }
