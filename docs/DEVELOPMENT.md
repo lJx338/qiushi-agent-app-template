@@ -6,7 +6,7 @@
 
 1. 使用 .nvmrc 指定 Node，模板有 lock 时 npm ci，首次新生成应用用 npm install 生成 lock。
 2. 明确本应用 PRD、权限规格和验收样例；创建短任务分支，一个 AI 会话一个独立工作区。
-3. 使用 @qiushi/app-kit 定义动作；业务代码放 src/app.ts，Host 通过 @qiushi/app-kit/dsh 注册。不自建 Agent 运行循环。
+3. 使用 @qiushi/app-kit 定义动作；业务代码放 src/app.ts，Host 通过 @qiushi/app-kit/dsh 注册。不自建 Agent 运行循环。manifest 中每个 action 明确声明 UI/模型/导出/外发 `purposes`，打包器不会代替业务开发者猜用途。
 4. 输入输出修改同步 schemas、manifest、fixtures 和 tests。类型/动作检查不等于生产授权。
 5. 运行 npm run verify；运行 npm run app:dev，验证合成数据、无权限、停用和错误输入。
 6. npm run app:pack 输出开发 tgz 和 release.json。源码在本应用仓库提 PR，包通过后续平台制品流程交付，不合并业务源码到平台。

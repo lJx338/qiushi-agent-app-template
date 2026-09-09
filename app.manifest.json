@@ -16,11 +16,12 @@
   ] },
   "requires": ["customers.read@1", "drafts.create@1"],
   "permissions": ["customer:read", "draft:create"],
-  "dataDependencies": [{ "logicalName": "customers", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "name", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }],
+  "dataDependencies": [{ "logicalName": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "name", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }],
   "actions": [{
     "id": "qiushi.starter-app.createDraft",
     "toolName": "qiushi_starter_app_create_draft",
     "permissions": ["customer:read", "draft:create"],
+    "purposes": ["ui", "model"],
     "effects": "business-write",
     "inputSchema": "schemas/create.input.json",
     "outputSchema": "schemas/create.output.json"
