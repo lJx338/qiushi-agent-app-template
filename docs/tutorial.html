@@ -8,10 +8,10 @@
 </style>
 </head>
 <body>
-<header><div class="eyebrow">求实 · 开发者指南</div><h1>从独立仓库，交付一个 Agent 应用</h1><p>先跑通样板，再给 AI 一份有边界的 PRD。你的代码留在应用仓库，平台后续接收经过校验的应用制品。</p><span class="tag">starter-app · 开发基线 0.2.0-dev.1</span> <span class="tag">可离线阅读</span></header>
+<header><div class="eyebrow">求实 · 开发者指南</div><h1>从独立仓库，交付一个 Agent 应用</h1><p>先跑通样板，再给 AI 一份有边界的 PRD。你的代码留在应用仓库，平台后续接收经过校验的应用制品。</p><span class="tag">starter-app · 开发基线 0.3.0-dev.1</span> <span class="tag">可离线阅读</span></header>
 <div class="layout"><nav aria-label="教程章节"><a href="#scope">01 / 开始之前</a><a href="#setup">02 / 环境与首跑</a><a href="#create">03 / 创建自己的应用</a><a href="#ai">04 / 把任务交给 AI</a><a href="#code">05 / 应用怎样组织</a><a href="#preview">06 / 预览与测试</a><a href="#delivery">07 / 提交与交付</a><a href="#troubleshooting">08 / 常见问题</a><a href="#checklist">09 / 交付检查</a></nav>
 <main>
-<section id="scope"><h2>01 / 先确认现在能做什么</h2><p>本仓库只有应用、开发依赖和说明，没有平台主项目。SDK、模拟执行器、检查、预览和打包来自固定版本 <code>@qiushi/app-kit</code>。</p><div class="note"><strong>这是开发工具，不是已上线的 SaaS。</strong><br>可做业务逻辑、schema、合成测试及交互规格；真实登录、租户权限、飞书/腾讯、持久审批、DSH 原生客户端和应用安装后台仍待平台实现。不要把模拟成功写成生产验收。</div><div class="steps"><span>创建应用</span><span>PRD + AI 开发</span><span>预览与验证</span><span>打包交付</span><span>后续：后台授权启用</span></div></section>
+<section id="scope"><h2>01 / 先确认现在能做什么</h2><p>本仓库只有应用、开发依赖和说明，没有平台主项目。SDK、模拟执行器、检查、预览和打包来自固定版本 <code>@qiushi/app-kit</code>。</p><div class="note"><strong>这是开发工具，不是已上线的 SaaS。</strong><br>可做业务逻辑、schema、合成测试及平台 UI extension；真实登录、租户权限、飞书/腾讯、持久审批和应用安装后台仍待平台实现。不要把模拟成功写成生产验收。</div><div class="steps"><span>创建应用</span><span>PRD + AI 开发</span><span>预览与验证</span><span>打包交付</span><span>后续：后台授权启用</span></div></section>
 <section id="setup"><h2>02 / 环境准备与第一次运行</h2><p>先拉取你有权限访问的私有模板仓库，并进入目录。使用 <code>.nvmrc</code> 指定的 Node 22.23.2；已安装 nvm 时执行：</p><pre><code>nvm install
 nvm use
 npm ci

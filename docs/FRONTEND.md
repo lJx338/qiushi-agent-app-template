@@ -2,9 +2,9 @@
 
 延续平台白底蓝色视觉：主色 #1d63ff、浅底 #edf3ff、正文 #202c40，系统无衬线，正文 14–16px，层级标题 20–28px。间距采用 4px 倍数，常用 8/12/16/24/32；圆角约 8px，表格数值右对齐并标单位。
 
-共享 CSS token 由 @qiushi/app-kit/tokens.css 提供。样式限定 .qs-app 或模块作用域，不全局覆盖 DSH 的 body/button/input。不要自行安装另一套 React 或 UI 库；原生 client 使用宿主版本，待平台提供真实 client 模板后接入。
+共享 CSS token 由 @qiushi/app-kit/tokens.css 提供。样式限定 .qs-app 或模块作用域，不全局覆盖平台的 body/button/input。不要自行安装另一套 React 或 UI 库；`src/client/index.tsx` 使用 `@qiushi/app-kit/ui` 的宿主版本和受限 bridge。
 
-页面采用“标题/状态/主操作 → 查询或输入 → 列表/结果 → 审批与记录”。不重复绘制平台导航、租户切换、登录和聊天系统。首期可设计业务页面规格，app:dev 只是 JSON 动作表单，不是完整工作台。
+页面采用“标题/状态/主操作 → 查询或输入 → 列表/结果 → 审批与记录”。不重复绘制平台导航、租户切换、登录和聊天系统。声明 form、table、conversation 或 mixed 页面；app:dev 只是 JSON 动作表单，不是完整工作台。
 
 必须设计 loading、empty、error、forbidden、success、核对中状态。权限失败给有权处理者路径，不泄露无权对象名称。未知写入结果先核对，不能无条件重试；前端隐藏字段不等于服务端权限过滤。
 

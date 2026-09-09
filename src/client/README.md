@@ -1,5 +1,3 @@
-# 原生工作台预留
+# 平台 UI extension
 
-当前 app:dev 是开发动作表单，不是 DSH 原生客户端。先按 docs/FRONTEND.md 定义业务交互与页面状态；在平台提供经过真实加载验证的 client 扩展后再接正式 UI。
-
-不自建全局登录、租户切换或第二套聊天系统，不直接照搬原型依赖。Host/Client 实际兼容验证必须另附证据。
+`index.tsx` 是 `qiushi.ui.v1` 平台 UI extension，由单一 React 宿主加载，不是 DSH Client UI。只使用 `@qiushi/app-kit/ui` 的受限 bridge；禁止读取 cookie、DSH session/端口/凭证、任意路由或打包第二份 React。`app:dev` 仍是动作契约预览，不代表平台已安装。
