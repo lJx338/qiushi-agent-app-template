@@ -1,7 +1,7 @@
 {
   "manifestVersion": "2",
   "id": "qiushi.starter-app",
-  "name": "应用开发样板 Agent",
+  "name": "独立 Agent 应用开发模板",
   "version": "0.1.0",
   "owner": "lJx338",
   "contractVersion": "2",
@@ -16,7 +16,7 @@
   ] },
   "requires": ["customers.read@1", "drafts.create@1"],
   "permissions": ["customer:read", "draft:create"],
-  "dataDependencies": [{ "logicalName": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "name", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }],
+  "dataDependencies": [{ "logicalName": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "customerId", "type": "string", "required": true, "purposes": ["ui"] }, { "name": "displayName", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }, { "logicalName": "quote-draft", "contractVersion": "1", "required": false, "operations": ["create"], "fields": [{ "name": "id", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "customerId", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "title", "type": "string", "required": true, "purposes": ["external-action"] }], "accessMode": "tenant-shared", "purposes": ["external-action"] }],
   "actions": [{
     "id": "qiushi.starter-app.createDraft",
     "toolName": "qiushi_starter_app_create_draft",
