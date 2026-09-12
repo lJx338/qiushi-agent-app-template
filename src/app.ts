@@ -1,4 +1,4 @@
-import { defineApp } from '@qiushi/app-kit';
+import { defineApp, type Customer, type Draft } from '@qiushi/app-kit';
 import inputSchema from '../schemas/create.input.json' with { type: 'json' };
 import outputSchema from '../schemas/create.output.json' with { type: 'json' };
 
@@ -15,13 +15,14 @@ export default defineApp({
     outputSchema,
     async execute(input, execution) {
       const { customerId, title } = input as { customerId: string; title: string };
-      const customer = await execution.data.getCustomer(customerId, execution.signal);
-      const draft = await execution.data.createDraft({
-        customerId: customer.id,
+      const customer = await execution.data.get<Customer>('customer', customerId, execution.signal);
+      if (!customer) throw new Error('customer not found');
+      const draft = await execution.data.create<Draft>('quote-draft', {
+        customerId: String(customer.customerId),
         title,
-        details: { customerName: customer.name },
+        details: { customerName: String(customer.displayName) },
       }, execution.operationId, execution.signal);
-      return { draftId: draft.id, customerId: customer.id, title: draft.title };
+      return { draftId: String(draft.id), customerId: String(customer.customerId), title: String(draft.title) };
     },
   }],
 });

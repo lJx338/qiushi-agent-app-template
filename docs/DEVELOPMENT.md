@@ -6,15 +6,21 @@
 
 1. 使用 .nvmrc 指定 Node，模板有 lock 时 npm ci，首次新生成应用用 npm install 生成 lock。
 2. 明确本应用 PRD、权限规格和验收样例；创建短任务分支，一个 AI 会话一个独立工作区。
-3. 使用 @qiushi/app-kit 定义动作；业务代码放 src/app.ts，Host 通过 @qiushi/app-kit/dsh 注册。不自建 Agent 运行循环。manifest 中每个 action 明确声明 UI/模型/导出/外发 `purposes`，打包器不会代替业务开发者猜用途。
+3. 使用 @qiushi/app-kit 定义动作；业务代码放 src/app.ts，Host 通过 @qiushi/app-kit/dsh 注册。不自建 Agent 运行循环。
 4. 输入输出修改同步 schemas、manifest、fixtures 和 tests。类型/动作检查不等于生产授权。
 5. 运行 npm run verify；运行 npm run app:dev，验证合成数据、无权限、停用和错误输入。
 6. npm run app:pack 输出开发 tgz 和 release.json。源码在本应用仓库提 PR，包通过后续平台制品流程交付，不合并业务源码到平台。
 
 src/client/index.tsx 声明 `qiushi.ui.v1` 平台 UI extension；它使用单一 React 宿主的受限 action/data/conversation bridge，不能读 cookie、DSH session/端口或凭证。工作流可先写明确状态与副作用规格，持久审批和真实来源仍必须等待相应平台契约。当前不允许“为了跑通”接生产密钥/表 ID 或重写 SDK。
 
-依赖分发：vendor 里的 @qiushi/app-kit 是平台构建的固定版本开发依赖，包含 SDK/CLI/规范资源，不包含平台主项目。package-lock integrity 用于安装完整性检查；它不等于可信发布者签名。保持仓库私有。升级时替换平台提供的新版本归档、对应 package 声明和 lock，并跑完整验证；不得原地修改归档伪装同版本。
+依赖分发：vendor 里的 @qiushi/app-kit 是平台构建的固定版本开发依赖，包含 SDK/CLI/规范资源，不包含平台主项目。package-lock integrity 用于安装完整性检查；它不等于可信发布者签名。模板可以公开，业务应用仓库的可见性由负责人按代码与数据要求设置；不提交真实客户数据或凭证。升级时替换平台提供的新版本归档、对应 package 声明和 lock，并跑完整验证；不得原地修改归档伪装同版本。
 
 Git：不直接推 main；按应用任务开短分支，PR 附需求编号、变更文件、权限影响、测试结果、包摘要和未实现项。目录范围与主干保护仍依赖实际团队配置，AGENTS/CI 文件不自动给仓库配置权限。CI 只测试合成数据，不使用生产 secrets。
 
 平台能力问题记录到本应用 PRD，由平台负责人发布新版 SDK/工具或 provider。不要在 AI 工作区中额外克隆平台仓库。
+
+## 设计先于实现
+
+先把 PRD 的业务场景、页面、输入输出、权限和数据字段定清，再按当前 kit 契约实现。区分共享领域数据、应用私有数据、外部源数据；缺的持久能力在 PRD 记录平台依赖。当前 development 包不代表正式数据库/文件/任务能力齐全。前后台独立登录；本应用只在客户前台中使用，不开发内部运营或单点登录。
+
+平台 templates/standalone 是模板规范源。公开模板更新与 kit 发布是两件事；现有 vendor 中的生成器不会因为仓库 Markdown 更新自动获得新规范。新生成目录应核对规范版本，在平台发布新 kit 后按升级说明更新；不得改旧 tgz。

@@ -34,7 +34,7 @@
     "verify": "qiushi-app verify"
   },
   "devDependencies": {
-    "@qiushi/app-kit": "file:vendor/qiushi-app-kit-0.3.0-dev.1.tgz",
+    "@qiushi/app-kit": "file:vendor/qiushi-app-kit-0.3.0-dev.3.tgz",
     "@types/node": "22.20.0"
   }
 }
