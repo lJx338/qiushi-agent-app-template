@@ -1,21 +1,30 @@
 {
   "manifestVersion": "2",
   "id": "qiushi.starter-app",
-  "name": "独立 Agent 应用开发模板",
+  "name": "应用开发样板 Agent",
   "version": "0.1.0",
   "owner": "lJx338",
   "contractVersion": "2",
   "stage": "development",
   "entry": "src/app.ts",
   "hostEntry": "src/host.ts",
+  "display": { "overview": "说明此应用为客户解决的业务问题。", "capabilities": ["填写首项业务能力", "查看已授权的业务记录"], "inputs": ["填写用户需要提供的信息"], "outputs": ["填写用户将获得的结果"], "dataUses": ["说明获权数据的业务用途"] },
   "ui": { "apiVersion": "qiushi.ui.v1", "entry": "src/client/index.tsx", "routeSegment": "starter-app", "pages": [
     { "id": "draft", "title": "草稿", "kind": "form", "requiredHostComponents": ["PageHeader", "Field", "ResultPanel", "LoadingState", "ErrorState", "PermissionState"] },
     { "id": "records", "title": "记录", "kind": "table", "requiredHostComponents": ["PageHeader", "DataTable", "LoadingState", "ErrorState", "PermissionState"] },
     { "id": "assistant", "title": "会话", "kind": "conversation", "requiredHostComponents": ["PageHeader", "ConversationPanel", "LoadingState", "ErrorState"] },
     { "id": "workspace", "title": "工作台", "kind": "mixed", "requiredHostComponents": ["PageHeader", "Field", "DataTable", "ResultPanel", "ConversationPanel", "LoadingState", "ErrorState", "PermissionState"] }
   ] },
+  "scenarios": [
+    { "id": "draft", "kind": "page", "entry": "src/client/index.tsx", "route": "draft", "title": "草稿", "navigation": "customer", "capabilities": [], "purposes": ["ui"], "businessDomains": ["draft"], "permissions": ["customer:read", "draft:create"] },
+    { "id": "records", "kind": "page", "entry": "src/client/index.tsx", "route": "records", "title": "记录", "navigation": "customer", "capabilities": [], "purposes": ["ui"], "businessDomains": ["draft"], "permissions": ["customer:read"] },
+    { "id": "assistant", "kind": "conversation", "entry": "src/client/index.tsx", "route": "assistant", "title": "会话", "navigation": "customer", "capabilities": [{ "id": "qiushi.official.order-triage", "visibility": "internal" }], "purposes": ["ui", "model"], "businessDomains": ["draft"], "permissions": ["customer:read"] },
+    { "id": "workspace", "kind": "page", "entry": "src/client/index.tsx", "route": "workspace", "title": "工作台", "navigation": "customer", "capabilities": [], "purposes": ["ui", "external-action"], "businessDomains": ["draft"], "permissions": ["customer:read", "draft:create"] }
+  ],
   "requires": ["customers.read@1", "drafts.create@1"],
-  "permissions": ["customer:read", "draft:create"],
+  "permissions": ["customer:read", "draft:create", "orders:read"],
+  "dependencies": [{ "id": "qiushi.official.order-triage", "version": "1.0.0", "required": true, "purposes": ["ui", "model"] }],
+  "capabilityLock": { "registryVersion": 1, "entries": [{ "id": "qiushi.official.order-triage", "version": "1.0.0", "digest": "sha256:8ad4d06f7d4c4f6f8a02ee0c7e4fdf8e83b1524b4ebf7c6d10e835a1a5e3f1ac", "permissions": ["orders:read"], "dataPurposes": ["ui", "model"], "required": true, "requestedPurposes": ["ui", "model"] }] },
   "dataDependencies": [{ "logicalName": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "customerId", "type": "string", "required": true, "purposes": ["ui"] }, { "name": "displayName", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }, { "logicalName": "quote-draft", "contractVersion": "1", "required": false, "operations": ["create"], "fields": [{ "name": "id", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "customerId", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "title", "type": "string", "required": true, "purposes": ["external-action"] }], "accessMode": "tenant-shared", "purposes": ["external-action"] }],
   "actions": [{
     "id": "qiushi.starter-app.createDraft",
