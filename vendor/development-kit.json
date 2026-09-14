@@ -1,11 +1,11 @@
 {
   "name": "@qiushi/app-kit",
-  "version": "0.3.0-dev.11",
-  "archive": "qiushi-app-kit-0.3.0-dev.11-1eaebfc4077d4bb1.tgz",
-  "sha256": "1eaebfc4077d4bb1e8a96ea1878fa1520deef59e15d82710310fb15ee2525372",
+  "version": "0.3.0-dev.12",
+  "archive": "qiushi-app-kit-0.3.0-dev.12-9aecf5f8475f905b.tgz",
+  "sha256": "9aecf5f8475f905b26928c3af2eaf644c902839ad49b847398798157df4e9319",
   "productionReady": false,
   "distribution": "private-vendored-npm-archive",
-  "sourceCommit": "fdfae8e1ccbce0e5837b5ca5833e23506af74775",
+  "sourceCommit": "afddb6fb2e352793c02add71cdf23fd367e47077",
   "sourceDirty": false,
   "contents": [
     "README.md",
