@@ -2,7 +2,7 @@
 
 当前应用：qiushi.starter-app；负责人：lJx338；阶段：development。
 
-这是独立业务应用仓库，平台源码不在此仓库。先读 README.md、docs/DEVELOPMENT.md、docs/PRD.md、docs/PERMISSIONS.md、docs/FRONTEND.md。
+这是独立业务应用仓库，平台源码不在此仓库。先读 README.md、docs/DEVELOPMENT.md、docs/PRD.md、docs/PERMISSIONS.md、docs/FRONTEND.md 和模板内的应用最佳实践说明。
 
 - 业务只写 src/、schemas/、fixtures/、tests/、presets/ 和本应用 docs/。先复述业务范围和允许修改路径，再创建任务分支。
 - SDK 与工具来自固定版本 @qiushi/app-kit，不改 node_modules、vendor、依赖/lock、CI 或检查脚本来绕过规则。需要升级时由平台提供新版本并在任务中明确授权。
@@ -12,6 +12,10 @@
 - 固定 Node 版本见 .nvmrc，依赖用 npm ci。提交前 npm run verify，再 npm run app:pack；核对所有变更文件，不提交 .local、dist、客户数据或密钥。
 - UI 保持白底蓝色；`src/client/index.tsx` 是 `qiushi.ui.v1` 平台 UI extension，只能使用宿主 bridge，不能读取 cookie、DSH session/端口或凭证。当前本地表单只用于动作契约预览；禁止把 mock/打包成功或 stage 修改当作生产验收。
 - 任务通过本应用仓库 PR 评审交付；不自行向 main 推送或部署生产，不把应用源码合并到平台仓库。
+
+应用先完成 PRD、领域模型、状态机和行为测试，再实现页面和 DSH bridge。平台端口、幂等、CAS、审批和撤权由宿主提供；应用不得自建数据库、身份或第二套 SDK。状态机必须存在于生产代码，不能只在测试里写断言对象。
+
+开发过程按四个检查点记录：设计确认、领域/schema 完成、公共决策或重复失败、固定 SHA 交付。前三项在本应用仓库的唯一 Linear Issue Workpad 记录事实和影响；未使用 Linear 时，使用本应用的 PR 或 Issue。最后一项在同一记录交付固定 SHA；普通编译错误自行修复，不以中间进度结束 AI 回合。
 
 AGENTS 是开发指令，不是本机文件系统沙箱；当前 CI 不提供按任务路径的强制写保护。
 

@@ -2,12 +2,17 @@
 
 图文步骤见 [离线 HTML 教程](tutorial.html)，双击即可打开，无需联网或启动服务。
 
+实现前先阅读仓库内的应用最佳实践说明；它规定 PRD、领域层、平台端口、场景页面、行为测试和交付证据的顺序。报价应用是实践样例，业务规则不可直接复制。
+
+开发检查点：先记录设计确认，再记录领域/schema 摘要；遇到公共契约缺口或重复失败，在本应用仓库的唯一 Linear Issue Workpad 记录命令、最短错误、已尝试方案、最小提案和影响。未使用 Linear 时，使用本应用的 PR 或 Issue 记录同样信息。完成固定 SHA、evidence 和验证后在该 PR/Issue 交付。不要直播所有过程，也不要用 mock 或测试常量代替运行时行为。
+
 开发工具验收环境为 macOS 和 Linux CI；Windows 建议在 WSL2 的 Linux 环境执行，原生 Windows 尚未验收。
 
 1. 使用 .nvmrc 指定 Node，模板有 lock 时 npm ci，首次新生成应用用 npm install 生成 lock。
 2. 明确本应用 PRD、权限规格和验收样例；创建短任务分支，一个 AI 会话一个独立工作区。
 3. 使用 @qiushi/app-kit 定义动作；业务代码放 src/app.ts，Host 通过 @qiushi/app-kit/dsh 注册。不自建 Agent 运行循环。
 4. 输入输出修改同步 schemas、manifest、fixtures 和 tests。类型/动作检查不等于生产授权。
+   manifest 的 `scenarios` 必须至少有一个 `page`、`conversation` 或 `workflow`；入口、路由、用途、业务域和能力可见性同步检查，跨应用协同只使用平台 `businessReference`。
 5. 运行 npm run verify；运行 npm run app:dev，验证合成数据、无权限、停用和错误输入。
 6. npm run app:pack 输出开发 tgz 和 release.json。源码在本应用仓库提 PR，包通过后续平台制品流程交付，不合并业务源码到平台。
 
