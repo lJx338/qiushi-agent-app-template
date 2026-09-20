@@ -1,6 +1,8 @@
-# 独立 Agent 应用最佳实践 v1.4
+# 独立 Agent 应用最佳实践 v1.5
 
 本文是独立业务应用的可复用开发基线。它以 V6-Q1“钣金激光切割 + 折弯 + 常规表面处理报价”作为第一份实践样例，规范应用开发者、平台开发者和 AI 开发会话之间的边界。应用先完成可解释的业务闭环，再接入真实数据源、审批和生产运行时；`verify` 通过不等于生产能力已经就绪。
+
+搭配 [平台接入指南](PLATFORM-INTEGRATION.md) 执行命令和交付，使用[本地模拟与真实环境对照](LOCAL-AND-REAL-ENVIRONMENTS.md)标注证据，按[权限、数据源与场景示例](PERMISSION-DATA-SOURCE-SCENARIO-EXAMPLES.md)填写边界，并在失败时查[制品提交与失败排错](SUBMISSION-TROUBLESHOOTING.md)。
 
 ## 1. 先定义应用，再写代码
 
@@ -66,7 +68,7 @@ docs/FRONTEND.md
 
 ## 5. manifest、能力和场景
 
-应用 manifest v2 必须至少声明一个场景。 `scenarios`、UI pages 和实际路由一一对应：
+应用 manifest v3 必须至少声明一个场景，并声明 Edge runtime extension、capability lock v1 和 data dependency 的 ontology anchor。`scenarios`、UI pages 和实际路由一一对应：
 
 | manifest 场景 | 页面职责 | 常见用途 |
 |---|---|---|
