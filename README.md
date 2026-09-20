@@ -2,9 +2,9 @@
 
 负责人：lJx338。已由生成器创建的独立应用，固定开发包位于 vendor，安装无需平台源码或平台仓库权限。当前为 development，默认动作是为合成客户创建业务草稿。
 
-**先打开 [中文 HTML 开发教程](docs/tutorial.html)**：下载到本地后双击即可阅读，包含完整命令、给 AI 的任务示例与交付检查，无外部网络依赖。
+**先打开 [中文 HTML 开发教程](docs/tutorial.html)**：下载到本地后双击即可阅读，包含完整命令、给 AI 的任务示例与交付检查，无外部网络依赖。随后按 [平台接入指南](docs/PLATFORM-INTEGRATION.md)、[本地模拟与真实环境对照](docs/LOCAL-AND-REAL-ENVIRONMENTS.md)、[提交失败排错](docs/SUBMISSION-TROUBLESHOOTING.md) 和 [权限、数据源与场景示例](docs/PERMISSION-DATA-SOURCE-SCENARIO-EXAMPLES.md) 继续。
 
-开始实现前先按应用最佳实践完成 `docs/PRD.md`、状态机、权限规格和验收矩阵；应用只实现业务领域，身份、租户、幂等、CAS 和持久审批由平台端口提供。
+开始实现前先按 [应用最佳实践](docs/APPLICATION-BEST-PRACTICES.md) 完成 `docs/PRD.md`、状态机、权限规格和验收矩阵；应用只实现业务领域，身份、租户、幂等、CAS 和持久审批由平台端口提供。
 
 ## 首次运行
 
@@ -47,7 +47,7 @@ npm run app:pack
 
 产物在 .local/artifacts：应用 tgz 与 v2 release.json，含归档、UI、runtime 的 SHA-256、数据依赖、权限摘要和开发阶段标记。应用源码在本仓库评审；后续后台按制品登记、校验、授权和启用，不要求合并到平台源码。
 
-后台尚未实现；此开发包未签名、不能生产启用，也未验证真实 DSH Host/Client、登录/权限、飞书或持久业务。`npm run app:check -- --release` 必须拒绝生产发布。
+后台尚未实现；此开发包未签名、不能生产启用，也未验证真实 Edge loader/隔离、登录/权限、飞书或持久业务。`npm run app:check -- --release` 必须拒绝生产发布。
 
 ## 文件与规范
 

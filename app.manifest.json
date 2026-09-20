@@ -1,13 +1,23 @@
 {
-  "manifestVersion": "2",
+  "manifestVersion": "3",
   "id": "qiushi.starter-app",
   "name": "应用开发样板 Agent",
   "version": "0.1.0",
   "owner": "lJx338",
-  "contractVersion": "2",
+  "contractVersion": "3",
   "stage": "development",
   "entry": "src/app.ts",
-  "hostEntry": "src/host.ts",
+  "runtime": {
+    "target": "edge-extension",
+    "extensions": [{ "kind": "runtime-extension", "entry": "src/host.ts" }],
+    "environment": {
+      "runtimeVersion": "1.0.0", "dshRevision": "none", "nodeVersion": "22.23.2", "cordisVersion": "none",
+      "entryTypes": ["worker"], "networkHosts": [],
+      "filesystem": { "mode": "none", "roots": [] }, "credentialBrokerIds": [], "deviceIds": [],
+      "limits": { "cpuMillicores": 250, "memoryMiB": 256, "maxConcurrency": 2 }
+    }
+  },
+  "desktopResources": [],
   "display": { "overview": "说明此应用为客户解决的业务问题。", "capabilities": ["填写首项业务能力", "查看已授权的业务记录"], "inputs": ["填写用户需要提供的信息"], "outputs": ["填写用户将获得的结果"], "dataUses": ["说明获权数据的业务用途"] },
   "ui": { "apiVersion": "qiushi.ui.v1", "entry": "src/client/index.tsx", "routeSegment": "starter-app", "pages": [
     { "id": "draft", "title": "草稿", "kind": "form", "requiredHostComponents": ["PageHeader", "Field", "ResultPanel", "LoadingState", "ErrorState", "PermissionState"] },
@@ -18,14 +28,17 @@
   "scenarios": [
     { "id": "draft", "kind": "page", "entry": "src/client/index.tsx", "route": "draft", "title": "草稿", "navigation": "customer", "capabilities": [], "purposes": ["ui"], "businessDomains": ["draft"], "permissions": ["customer:read", "draft:create"] },
     { "id": "records", "kind": "page", "entry": "src/client/index.tsx", "route": "records", "title": "记录", "navigation": "customer", "capabilities": [], "purposes": ["ui"], "businessDomains": ["draft"], "permissions": ["customer:read"] },
-    { "id": "assistant", "kind": "conversation", "entry": "src/client/index.tsx", "route": "assistant", "title": "会话", "navigation": "customer", "capabilities": [{ "id": "qiushi.official.order-triage", "visibility": "internal" }], "purposes": ["ui", "model"], "businessDomains": ["draft"], "permissions": ["customer:read"] },
+    { "id": "assistant", "kind": "conversation", "entry": "src/client/index.tsx", "route": "assistant", "title": "会话", "navigation": "customer", "capabilities": [], "purposes": ["ui", "model"], "businessDomains": ["draft"], "permissions": ["customer:read"] },
     { "id": "workspace", "kind": "page", "entry": "src/client/index.tsx", "route": "workspace", "title": "工作台", "navigation": "customer", "capabilities": [], "purposes": ["ui", "external-action"], "businessDomains": ["draft"], "permissions": ["customer:read", "draft:create"] }
   ],
-  "requires": ["customers.read@1", "drafts.create@1"],
-  "permissions": ["customer:read", "draft:create", "orders:read"],
-  "dependencies": [{ "id": "qiushi.official.order-triage", "version": "1.0.0", "required": true, "purposes": ["ui", "model"] }],
-  "capabilityLock": { "registryVersion": 1, "entries": [{ "id": "qiushi.official.order-triage", "version": "1.0.0", "digest": "sha256:8ad4d06f7d4c4f6f8a02ee0c7e4fdf8e83b1524b4ebf7c6d10e835a1a5e3f1ac", "permissions": ["orders:read"], "dataPurposes": ["ui", "model"], "required": true, "requestedPurposes": ["ui", "model"] }] },
-  "dataDependencies": [{ "logicalName": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "customerId", "type": "string", "required": true, "purposes": ["ui"] }, { "name": "displayName", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }, { "logicalName": "quote-draft", "contractVersion": "1", "required": false, "operations": ["create"], "fields": [{ "name": "id", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "customerId", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "title", "type": "string", "required": true, "purposes": ["external-action"] }], "accessMode": "tenant-shared", "purposes": ["external-action"] }],
+  "permissions": ["customer:read", "draft:create"],
+  "capabilityRequirements": {},
+  "capabilityLock": { "formatVersion": "qiushi.capability-lock.v1", "registryVersion": 2, "entries": {} },
+  "ontology": { "anchors": {
+    "customer": { "anchorVersion": "qiushi.ontology-anchor.v1", "kind": "action-input", "reference": { "referenceVersion": "qiushi.ontology-reference.v1", "namespace": { "layer": "platform-core", "namespace": "qiushi.core", "owner": "qiushi.platform" }, "type": "Customer", "version": "1.0.0", "id": "customer", "source": { "kind": "platform", "bindingId": "platform.customer", "recordId": "customer" } } },
+    "draft": { "anchorVersion": "qiushi.ontology-anchor.v1", "kind": "action-output", "reference": { "referenceVersion": "qiushi.ontology-reference.v1", "namespace": { "layer": "platform-core", "namespace": "qiushi.core", "owner": "qiushi.platform" }, "type": "Quote", "version": "1.0.0", "id": "draft", "source": { "kind": "platform", "bindingId": "platform.quote", "recordId": "draft" } } }
+  } },
+  "dataDependencies": [{ "logicalName": "customer", "ontologyAnchor": "customer", "contractVersion": "1", "required": true, "operations": ["get"], "fields": [{ "name": "customerId", "type": "string", "required": true, "purposes": ["ui"] }, { "name": "displayName", "type": "string", "required": true, "purposes": ["ui"] }], "accessMode": "tenant-shared", "purposes": ["ui"] }, { "logicalName": "quote-draft", "ontologyAnchor": "draft", "contractVersion": "1", "required": false, "operations": ["create"], "fields": [{ "name": "id", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "customerId", "type": "string", "required": true, "purposes": ["external-action"] }, { "name": "title", "type": "string", "required": true, "purposes": ["external-action"] }], "accessMode": "tenant-shared", "purposes": ["external-action"] }],
   "actions": [{
     "id": "qiushi.starter-app.createDraft",
     "toolName": "qiushi_starter_app_create_draft",
